@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% block title %}
+View Patients
+{% endblock %}
+{% block content %}
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background-color: #fff;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 12px;
+        text-align: left;
+    }
+    th {
+        background-color: #f2f2f2;
+        font-size: 15px;
+        font-weight: 400;
+    }
+    tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    tr:hover {
+        background-color: #f1f1f1;
+    }
+    td {
+        font-size: 12px;
+    }
+    .status-discharged {
+        color: green;
+    }
+    .status-transferred {
+        color: red;
+    }
+    .status-active {
+        color: black;
+    }
+    nav {
+        height: 56px;
+        background: #fbfcfe;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        grid-gap: 24px;
+        font-family: 'Poppins', sans-serif;
+        position: sticky;
+        top: 0;
+        left: 0;
+        z-index: 1000;
+    }
+    nav::before {
+        content: '';
+        position: absolute;
+        width: 40px;
+        height: 40px;
+        bottom: -40px;
+        left: 0;
+        border-radius: 50%;
+        box-shadow: -20px -20px 0 #fbfcfe;
+    }
+    nav a {
+        color: #333;
+    }
+    nav .bx.bx-menu {
+        cursor: pointer;
+        color: #333;
+    }
+    nav .nav-link {
+        font-size: 16px;
+        transition: .3s ease;
+    }
+    nav .nav-link:hover {
+        color: #4070f4;
+    }
+    nav form {
+        max-width: 400px;
+        width: 100%;
+        margin-right: auto;
+    }
+    nav form .form-input {
+        display: flex;
+        align-items: center;
+        height: 36px;
+    }
+    nav form .form-input input {
+        flex-grow: 1;
+        padding: 0 16px;
+        height: 100%;
+        border: none;
+        background: #f2f2f2;
+        border-radius: 36px 0 0 36px;
+        outline: none;
+        width: 100%;
+        color: #333;
+    }
+    nav form .form-input button {
+        width: 36px;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #4070f4;
+        color: #fff;
+        font-size: 18px;
+        border: none;
+        outline: none;
+        border-radius: 0 36px 36px 0;
+        cursor: pointer;
+    }
+    nav .notification {
+        font-size: 20px;
+        position: relative;
+    }
+    nav .notification .num {
+        position: absolute;
+        top: -6px;
+        right: -6px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        border: 2px solid #fff;
+        background: #ff0000;
+        color: #fff;
+        font-weight: 700;
+        font-size: 12px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    nav .profile img {
+        width: 36px;
+        height: 36px;
+        object-fit: cover;
+        border-radius: 50%;
+    }
+</style>
+<nav>
+    <form method="post" action="{% url 'viewpatients' %}">
+        {% csrf_token %}
+        <div class="form-input">
+            <input type="text" name="value" id="search" placeholder="Search...">
+            <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+        </div>
+    </form>
+    <a href="{% url 'addpatients' %}" class="nav-link">Add Patient</a>
+</nav>
+
+<table>
+    <thead>
+        <tr>
+            <th>Patient Id</th>
+            <th>Patient Name</th>
+            <th>Address</th>
+            <th>Consulting Doctor</th>
+            <th>Admission Date</th>
+            <th>Phone Number</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Bystander Name</th>
+            <th>Ward</th>
+            <th>Bed Number</th>
+            <th>Room Type</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for patient in patients %}
+        <tr>
+            <td>{{ patient.patientid }}</td>
+            <td>{{ patient.name }}</td>
+            <td>{{ patient.address }}</td>
+            <td>{{ patient.doct }}</td>
+            <td>{{ patient.admsndate }}</td>
+            <td>{{ patient.phn }}</td>
+            <td>{{ patient.age }}</td>
+            <td>{{ patient.gender }}</td>
+            <td>{{ patient.bystander }}</td>
+            <td>
+                {% if patient.roomno %}
+                    {{ patient.roomno.ward }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <td>
+                {% if patient.roomno %}
+                    {{ patient.roomno.roomno }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <td>
+                {% if patient.roomno %}
+                    {{ patient.roomno.roomtype }}
+                {% else %}
+                    N/A
+                {% endif %}
+            </td>
+            <td class="{% if patient.status == 'Discharged' %}status-discharged{% elif patient.status == 'Transferred' %}status-transferred{% else %}status-active{% endif %}">
+                {{ patient.status }}
+            </td>
+            <td>
+                <a href="{% url 'editpatient' patient.patientid %}">Edit</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

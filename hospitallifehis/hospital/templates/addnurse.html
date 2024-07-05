@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block title %}
+addnurse
+{% endblock %}
+{% block content %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=poppins:wght@200;300;400;500;600&display=swap');
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'poppins', sans-serif;
+    }
+    body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fbfcfe;
+    }
+    .container {
+        position: relative;
+        max-width: 900px;
+        width: 100%;
+        background-color: #fff;
+        border-radius: 6px;
+        padding: 30px;
+        margin: 0 15px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+    .container header {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+    }
+    .container header::before {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        height: 3px;
+        width: 27px;
+        background-color: #eef2fd;
+    }
+    .container form {
+        position: relative;
+        min-height: 490px;
+        background-color: #fff;
+        margin-top: 16px;
+    }
+    .container form .details {
+        margin-top: 10px;
+    }
+    .container form .title {
+        font-size: 16px;
+        font-weight: 500;
+        margin: 6px 0;
+        color: #333;
+    }
+    .container form .fields {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .input-field {
+        display: flex;
+        width: calc(100% / 3 - 15px);
+        background-color: white;
+        flex-direction: column;
+        margin: 4px 0;
+    }
+    .input-field label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #2e2e2e;
+    }
+    .input-field input,
+    .input-field select {
+        outline: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #333;
+        border: 1px solid #aaa;
+        padding: 0 15px;
+        height: 42px;
+        margin: 8px 0;
+        width: 100%;
+    }
+    .input-field select:is(:focus, :valid),
+    .input-field input:is(:focus, :valid) {
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+    }
+    .buttons {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 20px; 
+    }
+    .buttons button,
+    .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 200px;
+        height: 45px;
+        width: 100%;
+        border: none;
+        outline: none;
+        color: #fff;
+        border-radius: 5px;
+        margin: 0 10px;
+        background-color: #4070f4;
+        transition: all 0.3s linear;
+        cursor: pointer;
+    }
+    .buttons a {
+        text-decoration: none;
+        color: #333;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+    .buttons a:hover {
+        color: #4070f4;
+    }
+</style>
+
+<div class="container">
+    <header>Add Nurse</header>
+    <form method="post">
+        {% csrf_token %}
+        <div class="details personal">
+            <span class="title">Add Nurse</span>
+            <div class="fields">
+                <div class="input-field">
+                    <label for="id_name">Name</label>
+                    {{ form.name }}
+                </div>
+                <div class="input-field">
+                    <label for="id_shift">Shift Time</label>
+                    {{ form.shift }}
+                </div>
+                <div class="input-field">
+                    <label for="id_ward">Ward</label>
+                    {{ form.ward }}
+                </div>
+                <div class="input-field">
+                    <label for="id_date">Date</label>
+                    {{ form.date }}
+                </div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button type="submit" class="btn">Add Staff</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

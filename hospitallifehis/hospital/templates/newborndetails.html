@@ -1,0 +1,171 @@
+{% extends 'base.html' %}
+
+{% block title %}
+newborndetails
+{% endblock %}
+
+{% block content %}
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=poppins:wght@200;300;400;500;600&display=swap');
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'poppins', sans-serif;
+    }
+    body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fbfcfe;
+    }
+    .container {
+        position: relative;
+        max-width: 900px;
+        width: 100%;
+        background-color: #fff;
+        border-radius: 6px;
+        padding: 30px;
+        margin: 0 15px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+    .container header {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+    }
+    .container header::before {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        height: 3px;
+        width: 27px;
+        background-color: #eef2fd;
+    }
+    .container form {
+        position: relative;
+        min-height: 490px;
+        background-color: #fff;
+        margin-top: 16px;
+    }
+    .container form .details {
+        margin-top: 10px;
+    }
+    .container form .title {
+        font-size: 16px;
+        font-weight: 500;
+        margin: 6px 0;
+        color: #333;
+    }
+    .container form .fields {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .input-field {
+        display: flex;
+        width: calc(100% / 3 - 15px);
+        background-color: white;
+        flex-direction: column;
+        margin: 4px 0;
+    }
+    .input-field label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #2e2e2e;
+    }
+    .input-field input,
+    .input-field select {
+        outline: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #333;
+        border: 1px solid #aaa;
+        padding: 0 15px;
+        height: 42px;
+        margin: 8px 0;
+    }
+    .input-field select:focus,
+    .input-field input:focus {
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+    }
+    .buttons {
+        display: flex;
+        align-items: center;
+    }
+    .buttons button,
+    .btn {
+        margin-right: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 200px;
+        height: 45px;
+        width: 100%;
+        border: none;
+        outline: none;
+        color: #fff;
+        border-radius: 5px;
+        margin: 25px 0;
+        background-color: #4070f4;
+        transition: all 0.3s linear;
+        cursor: pointer;
+    }
+</style>
+
+<div class="container">
+    <header>Newborn Details</header>
+    <form method="post">
+        {% csrf_token %}
+        <div class="details personal">
+            <div class="fields">
+                <div class="input-field">
+                    <label for="parent_name">Parent Name (Inpatient)</label>
+                    <select name="name" id="parent_name">
+                        {% for inpatient in inpatients %}
+                        <option value=""></option>
+                        <option value="{{ inpatient.pk }}">{{ inpatient.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="baby_gender">Baby's Gender</label>
+                    <select name="gender" id="baby_gender">
+                        <option value=""></option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                    </select>
+                </div>
+                <div class="input-field">
+                    <label for="born_date">Born Date</label>
+                    <input type="date" name="date" id="born_date">
+                </div>
+                <div class="input-field">
+                    <label for="born_time">Born Time</label>
+                    <input type="time" name="time" id="born_time">
+                </div>
+                <div class="input-field">
+                    <label for="weight">Weight</label>
+                    <input type="text" name="weight" id="weight">
+                </div>
+                <div class="input-field">
+                    <label for="blood">Blood Group</label>
+                    <input type="text" name="blood" id="blood">
+                </div>
+                <div class="input-field">
+                    <label for="type">Type of Birth</label>
+                    <input type="text" name="type" id="type">
+                </div>
+            </div>
+        </div>
+        <div class="buttons">
+            <button type="submit" class="btn">Add</button>
+        </div>
+    </form>
+</div>
+
+
+{% endblock %}

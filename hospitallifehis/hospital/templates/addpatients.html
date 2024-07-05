@@ -1,0 +1,199 @@
+{% extends 'base.html' %}
+{% block title %}
+Add Patients
+{% endblock %}
+
+{% block content %}
+
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Poppins', sans-serif;
+    }
+    body {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #fbfcfe;
+    }
+    .container {
+        position: relative;
+        max-width: 900px;
+        width: 100%;
+        background-color: #fff;
+        border-radius: 6px;
+        padding: 30px;
+        margin: 0 15px;
+        box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+    .container header {
+        font-size: 20px;
+        font-weight: 600;
+        color: #333;
+    }
+    .container header::before {
+        content: "";
+        position: absolute;
+        bottom: -2px;
+        height: 3px;
+        width: 27px;
+        background-color: #eef2fd;
+    }
+    .container form {
+        position: relative;
+        min-height: 490px;
+        background-color: #fff;
+        margin-top: 16px;
+    }
+    .container form .details {
+        margin-top: 10px;
+    }
+    .container form .title {
+        font-size: 16px;
+        font-weight: 500;
+        margin: 6px 0;
+        color: #333;
+    }
+    .container form .fields {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .input-field {
+        display: flex;
+        width: calc(100% / 3 - 15px);
+        background-color: white;
+        flex-direction: column;
+        margin: 4px 0;
+    }
+    .input-field label {
+        font-size: 12px;
+        font-weight: 500;
+        color: #2e2e2e;
+    }
+    .input-field input,
+    .input-field select {
+        outline: none;
+        border-radius: 5px;
+        font-size: 14px;
+        font-weight: 400;
+        color: #333;
+        border: 1px solid #aaa;
+        padding: 0 15px;
+        height: 42px;
+        margin: 8px 0;
+    }
+    .input-field select:is(:focus, :valid),
+    .input-field input:is(:focus, :valid) {
+        box-shadow: 0 3px 6px rgba(0, 0, 0, 0.13);
+    }
+    .buttons {
+        display: flex;
+        align-items: center;
+    }
+    .buttons button,
+    .btn {
+        margin-right: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        max-width: 200px;
+        height: 45px;
+        width: 100%;
+        border: none;
+        outline: none;
+        color: #fff;
+        border-radius: 5px;
+        margin: 25px 0;
+        background-color: #4070f4;
+        transition: all 0.3s linear;
+        cursor: pointer;
+    }
+</style>
+
+<body>
+
+<div class="container">
+    <header>Add Inpatients</header>
+    <form method="post">
+        {% csrf_token %}
+        <div class="details personal">
+            <span class="title">Patient Details & Room Allocation</span>
+
+            <div class="fields">
+                <div class="input-field">
+                    <label for="patientid">Patient Id</label>
+                    <input type="text" name="patientid" id="patientid" value="{{ form.patientid.value|default_if_none:'' }}">
+                    <div class="error">{{ form.patientid.errors }}</div>
+                </div>
+                <div class="input-field">
+                    <label for="name">Name</label>
+                    <input type="text" name="name" id="name" value="{{ form.name.value|default_if_none:'' }}">
+                    <div class="error">{{ form.name.errors }}</div>
+                </div>
+                <div class="input-field">
+                    <label for="phn">Phone Number</label>
+                    <input type="text" name="phn" id="phn" value="{{ form.phn.value|default_if_none:'' }}">
+                    <div class="error">{{ form.phn.errors }}</div>
+                </div>
+                <div class="input-field">
+                    <label for="address">Address</label>
+                    <input type="text" name="address" id="address" value="{{ form.address.value|default_if_none:'' }}">
+                    <div class="error">{{ form.address.errors }}</div>
+                </div>
+                <div class="input-field">
+                    <label for="gender">Gender</label>
+                    <input type="text" name="gender" id="gender" value="{{ form.gender.value|default_if_none:'' }}">
+                    <div class="error">{{ form.gender.errors }}</div>
+                </div>
+                <div class="input-field">
+                    <label for="age">Age</label>
+                    <input type="text" name="age" id="age" value="{{ form.age.value|default_if_none:'' }}">
+                    <div class="error">{{ form.age.errors }}</div>
+                </div>
+                <div class="input-field">
+                    <label for="doct">Consulting Doctor</label>
+                    <select name="doct" id="doct">
+                        {% for doctor in form.doct.field.queryset %}
+                        <option value=""></option>
+                            <option value="{{ doctor.pk }}" {% if doctor.pk == form.doct.value %}selected{% endif %}>{{ doctor.name }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="error">{{ form.doct.errors }}</div>
+                </div>
+                <div class="input-field">
+                    <label for="admsndate">Admission Date</label>
+                    <input type="date" name="admsndate" id="admsndate" value="{{ form.admsndate.value|default_if_none:'' }}">
+                    <div class="error">{{ form.admsndate.errors }}</div>
+                </div>
+                <div class="input-field">
+                    <label for="roomno">Room Number and Ward</label>
+                    <select name="roomno" id="roomno">
+                        {% for ward in form.roomno.field.queryset %}
+                            <option value=""></option>
+                            <option value="{{ ward.pk }}" {% if ward.pk == form.roomno.value %}selected{% endif %}>{{ ward.roomno }} - {{ ward.ward }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="error">{{ form.roomno.errors }}</div>
+                </div>
+                <div class="input-field">
+                    <label for="bystander">Bystander's Name</label>
+                    <input type="text" name="bystander" id="bystander" value="{{ form.bystander.value|default_if_none:'' }}">
+                    <div class="error">{{ form.bystander.errors }}</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="buttons">
+            <button type="submit" class="btn">Add</button>
+        </div>
+    </form>
+    <a href="/">Back</a>
+</div>
+
+{% endblock %}
